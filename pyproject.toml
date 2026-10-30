@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "uznlp"
+version = "0.1.1"
+description = "Rule-based Uzbek language utilities"
+requires-python = ">=3.10"
+[tool.setuptools]
+packages = ["uznlp"]
+package-dir = {uznlp = "."}

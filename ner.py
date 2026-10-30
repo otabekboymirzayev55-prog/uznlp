@@ -31,7 +31,7 @@ def recognize_entities(text):
     text_lower = text.lower()
 
     for person in PERSONS:
-        for match in re.finditer(person, text_lower):
+        for match in re.finditer(r"(?<!\w)" + re.escape(person) + r"(?!\w)", text_lower):
             entities.append({"text": text[match.start():match.end()], "label": "SHAXS", "start": match.start()})
 
     for location in LOCATIONS:
@@ -39,7 +39,7 @@ def recognize_entities(text):
             entities.append({"text": text[match.start():match.end()], "label": "JOY", "start": match.start()})
 
     for org in ORGANIZATIONS:
-        for match in re.finditer(org, text_lower):
+        for match in re.finditer(r"(?<!\w)" + re.escape(org) + r"(?!\w)", text_lower):
             entities.append({"text": text[match.start():match.end()], "label": "TASHKILOT", "start": match.start()})
 
     for pattern in DATE_PATTERNS:
@@ -49,7 +49,7 @@ def recognize_entities(text):
     seen = set()
     result = []
     for e in entities:
-        key = (e["text"].lower(), e["label"])
+        key = (e["start"], e["text"].lower(), e["label"])
         if key not in seen:
             seen.add(key)
             result.append(e)

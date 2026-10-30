@@ -46,11 +46,17 @@ CYRILLIC_TO_LATIN = {
 }
 
 def latin_to_cyrillic(text):
+    for apostrophe in "ʻ‘’ʼ`":
+        text = text.replace(apostrophe, "'")
     result = ""
     i = 0
     while i < len(text):
         two_chars = text[i:i+2]
-        if two_chars in LATIN_TO_CYRILLIC:
+        if two_chars.lower() in LATIN_TO_CYRILLIC and two_chars.lower() in {"sh", "ch", "ng", "o'", "g'"}:
+            value = LATIN_TO_CYRILLIC[two_chars.lower()]
+            result += value.upper() if two_chars[0].isupper() else value
+            i += 2
+        elif two_chars in LATIN_TO_CYRILLIC:
             result += LATIN_TO_CYRILLIC[two_chars]
             i += 2
         elif text[i] in LATIN_TO_CYRILLIC:
@@ -68,9 +74,11 @@ def cyrillic_to_latin(text):
     return result
 
 def transliterate(text, direction="auto"):
+    if direction not in {"auto", "latin", "cyrillic"}:
+        raise ValueError("direction must be auto, latin or cyrillic")
     if direction == "auto":
-        cyrillic_count = sum(1 for c in text if 'а' <= c <= 'я' or c in "ўқғҳ")
-        latin_count = sum(1 for c in text if 'a' <= c <= 'z')
+        cyrillic_count = sum(1 for c in text if 'а' <= c.lower() <= 'я' or c.lower() in "ўқғҳё")
+        latin_count = sum(1 for c in text if 'a' <= c.lower() <= 'z')
         direction = "cyrillic" if cyrillic_count > latin_count else "latin"
     if direction == "latin":
         return latin_to_cyrillic(text)

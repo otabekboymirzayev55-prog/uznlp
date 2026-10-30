@@ -11,6 +11,14 @@ O'zbek tili uchun tabiiy til ishlov berish kutubxonasi.
 - Sentiment tahlil
 - NER (nom, joy, tashkilot aniqlash)
 
+## O‘rnatish
+
+```sh
+python -m pip install .
+```
+
+Bu qoida va lug‘atga asoslangan boshlang‘ich kutubxona; sentiment va NER natijalari ML modeli aniqligi sifatida talqin qilinmaydi.
+
 ## Ishlatish
 
 ```python
